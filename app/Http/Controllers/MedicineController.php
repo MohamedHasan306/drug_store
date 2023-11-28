@@ -13,7 +13,7 @@ class MedicineController extends Controller
     use ApiTrait;
     public function index(){
         $medicine=Medicine::all();
-        return $this->apiResponse($medicine,'the all medicines');
+        return $this->apiResponse($medicine,'the all medicines',200);
     }
 
     public function create(Request $request){

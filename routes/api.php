@@ -45,7 +45,7 @@ Route::controller(AuthController::class)->group(function (){
 
 
  // Quantity
-Route::controller(ExpirationdateController::class)->group(function (){
+Route::controller(ExpirationdateController::class)->prefix('expirationdate')->group(function (){
     Route::get('/{id}','quantity');
 });
 
@@ -66,7 +66,7 @@ Route::controller(MedicineController::class)->middleware('auth:sanctum')->prefix
 Route::controller(CategoryController::class)->middleware('auth:sanctum')->prefix('category')->group(function (){
     Route::post('/','create');
     Route::post('/{id_category}','update');
-    Route::delete('/id_category}','destroy');
+    Route::delete('/{id_category}','destroy');
 });
 
   //Expiration_Date
@@ -83,4 +83,4 @@ Route::controller(OrderController::class)->middleware('auth:sanctum')->prefix('o
 Route::group(['middleware'=>['auth:sanctum']], function () {
     Route::post('/logout',[AuthController::class,'logout']);
 });
-//test sodkfskdfjdfpew[fd
+
