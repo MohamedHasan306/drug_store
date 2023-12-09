@@ -11,8 +11,9 @@ class OrderController extends Controller
     use ApiTrait;
 
     public function create(Request $request){
-       $validator= $request->validate([
-           'medicine_id'=>'required',
+
+        $validator= $request->validate([
+            'medicine_id'=>'required',
             'pharmacist_id'=>'required',
             'order_quantity'=>'required']);
 
@@ -30,11 +31,6 @@ class OrderController extends Controller
             return $this->apiResponse($order, 'the order inserted', 201);
         }
 
-        return $this->apiResponse(null, 'the order didn\'t created', 400);
-
-    }
-
-
-
+        return $this->apiResponse(null, 'the order didn\'t created', 400);}
 
 }

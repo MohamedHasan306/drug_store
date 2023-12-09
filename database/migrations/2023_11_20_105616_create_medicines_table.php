@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('category_id');
             $table->string('scientific_name');
-            $table->string('trade_name');
+            $table->string('trade_name')->unique();
             $table->string('company');
+            $table->string('image')->nullable();
             $table->bigInteger('price');
             $table->timestamps();
         });

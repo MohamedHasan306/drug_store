@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('medicine_id');
-            $table->foreignId('pharmacist_id');
+            $table->foreignId('user_id');
             $table->integer('order_quantity');
             $table->timestamps();
         });

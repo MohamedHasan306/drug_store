@@ -12,44 +12,57 @@ class CategoryController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate( [
-            'name' => 'required|string|max:25'
-        ]);
+        if(auth()->user()->role) {
+            $request->validate([
+                'name' => 'required|string|max:25'
+            ]);
 
-        $category = Category::create($request->only('name'));
+            $category = Category::create($request->only('name'));
 
-        if ($category) {
-            return $this->apiResponse($category, 'the category inserted', 201);
+            if ($category) {
+                return $this->apiResponse($category, 'the category inserted', 201);
+            }
+
+            return $this->apiResponse(null, 'the category didn\'t created', 400);
         }
 
-        return $this->apiResponse(null, 'the category didn\'t created', 400);
+        return $this->apiResponse(null,'you aren\'t admin',403);
     }
 
     public function destroy($id)
     {
-        $category = Category::find($id);
-        if (!$category) {
-            return $this->apiResponse($category, 'the category not found', 404);
+        if(auth()->user()->role) {
+            $category = Category::find($id);
+            if (!$category) {
+                return $this->apiResponse($category, 'the category not found', 404);
+            }
+            $category->delete($id);
+            if ($category) {
+                return $this->apiResponse(null, 'the category deleted', 200);
+            }
         }
-        $category->delete($id);
-        if ($category) {
-            return $this->apiResponse(null, 'the category deleted', 200);
-        }
+
+        return $this->apiResponse(null,'you aren\'t admin',403);
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate( [
-            'name' => 'required|string|max:25'
-        ]);
-        $category = Category::findOrFail($id);
-        if (!$category) {
-            return $this->apiResponse($category, 'the post not found', 404);
+        if(auth()->user()->role) {
+            $request->validate( [
+                'name' => 'required|string|max:25'
+            ]);
+            $category = Category::findOrFail($id);
+            if (!$category) {
+                return $this->apiResponse($category, 'the category not found', 404);
+            }
+            $category->update($request->only('name'));
+            if ($category) {
+                return $this->apiResponse($category, 'the category updated', 201);
+            }
         }
-        $category->update($request->only('name'));
-        if ($category) {
-            return $this->apiResponse($category, 'the post updated', 201);
-        }
+
+        return $this->apiResponse(null,'you aren\'t admin',403);
+
     }
 
     public function search($name){

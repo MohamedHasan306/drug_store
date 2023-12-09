@@ -11,25 +11,29 @@ class ExpirationdateController extends Controller
     use ApiTrait;
 
     public function create(Request $request){
-        $request->validate([
-            'medicine_id'=>'required',
-            'expiration_date'=>'required|date',
-            'production_date'=>'required|date',
-            'quantity'=>'required'
-        ]);
+        if(auth()->user()->role){
+            $request->validate([
+                'medicine_id'=>'required',
+                'expiration_date'=>'required|date',
+                'production_date'=>'required|date',
+                'quantity'=>'required'
+            ]);
 
-        $expiration_date=Expirationdate::create($request->only(
-            'medicine_id',
-            'expiration_date',
-            'production_date',
-            'quantity'
-        ));
+            $expiration_date=Expirationdate::create($request->only(
+                'medicine_id',
+                'expiration_date',
+                'production_date',
+                'quantity'
+            ));
 
-        if ($expiration_date) {
-            return $this->apiResponse($expiration_date, 'the new Expiration_date inserted', 201);
+            if ($expiration_date) {
+                return $this->apiResponse($expiration_date, 'the new Expiration_date inserted', 201);
+            }
+
+            return $this->apiResponse(null, 'the Expiration_date didn\'t created', 400);
         }
 
-        return $this->apiResponse(null, 'the Expiration_date didn\'t created', 400);
+        return $this->apiResponse(null,'you aren\'t admin',403);
     }
 
     public function quantity($id){

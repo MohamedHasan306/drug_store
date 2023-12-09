@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExpirationdateController;
@@ -22,19 +23,10 @@ use Illuminate\Support\Facades\Route;
 
      //                   The Unprotected Route
 
- // Medicine
-Route::controller(MedicineController::class)->prefix('medicine')->group(function (){
-    Route::get('/','index');
-    Route::get('/{id_medicine}','show_medicine');
-    Route::get('/category/{id_category}','show');
-    Route::get('/search/{name}','search');
-});
 
 
- // Category
-Route::controller(CategoryController::class)->prefix('category')->group(function (){
-    Route::get('/search/{name}','search');
-});
+
+
 
 
  // Login & Register
@@ -43,12 +35,10 @@ Route::controller(AuthController::class)->group(function (){
     Route::post('/login','login');
 });
 
-
- // Quantity
-Route::controller(ExpirationdateController::class)->prefix('expirationdate')->group(function (){
-    Route::get('/{id}','quantity');
+// Login & Register (Admin)
+Route::controller(AdminController::class)->group(function (){
+    Route::post('/admin_login','login');
 });
-
 
 
 
@@ -57,6 +47,10 @@ Route::controller(ExpirationdateController::class)->prefix('expirationdate')->gr
 
   //Medicine
 Route::controller(MedicineController::class)->middleware('auth:sanctum')->prefix('medicine')->group(function (){
+    Route::get('/','index');
+    Route::get('/{id_medicine}','show_medicine');
+    Route::get('/category/{id_category}','show');
+    Route::get('/search/{name}','search');
     Route::post('/','create');
     Route::post('/{id_medicine}','update');
     Route::delete('/{id_medicine}','destroy');
@@ -67,11 +61,13 @@ Route::controller(CategoryController::class)->middleware('auth:sanctum')->prefix
     Route::post('/','create');
     Route::post('/{id_category}','update');
     Route::delete('/{id_category}','destroy');
+    Route::get('/search/{name}','search');
 });
 
   //Expiration_Date
 Route::controller(ExpirationdateController::class)->middleware('auth:sanctum')->prefix('expirationdate')->group(function (){
     Route::post('/','create');
+    Route::get('/{id}','quantity');
 });
 
   // Order

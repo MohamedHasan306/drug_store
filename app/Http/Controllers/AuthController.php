@@ -15,7 +15,7 @@ class AuthController extends Controller
         $validator=$request->validate([
             'name'=>'required|max:25|string',
             'email'=>'required|unique:users',
-            'phone_number'=>'required|unique:users',
+            'phone_number'=>'required|unique:users|max:10',
             'password'=>'required',
 
         ]);
@@ -51,7 +51,7 @@ class AuthController extends Controller
     public function  login (Request $request){
         $validator=$request->validate([
             'phone_number'=>'required',
-            'password'=>'required'
+            'password'=>'required|max:10'
         ]);
 
         $user=User::where('phone_number',$validator['phone_number'])->first();
